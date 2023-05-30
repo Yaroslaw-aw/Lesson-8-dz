@@ -5,17 +5,17 @@ import time
 
 
 
-# Конвертация message.date в читабельный вид
+# ГЉГ®Г­ГўГҐГ°ГІГ Г¶ГЁГї message.date Гў Г·ГЁГІГ ГЎГҐГ«ГјГ­Г»Г© ГўГЁГ¤
 convertDate = lambda x: time.strftime("%H:%M:%S %d.%m.%Y", time.localtime(x))
 
-myFirstBot = telebot.TeleBot("6154888943:AAHkZBEyCJKP_KgzDyvB7PBIJoFgfKHXCJk")
+myFirstBot = telebot.TeleBot("TOKEN")
 
 markup = types.ReplyKeyboardMarkup(row_width=2)
-btn_weather = types.KeyboardButton('Погода')
-btn_cats = types.KeyboardButton('Котики')
-btn_game = types.KeyboardButton('Игра')
+btn_weather = types.KeyboardButton('ГЏГ®ГЈГ®Г¤Г ')
+btn_cats = types.KeyboardButton('ГЉГ®ГІГЁГЄГЁ')
+btn_game = types.KeyboardButton('Г€ГЈГ°Г ')
 btn_start = types.KeyboardButton('/start')
-btn_question = types.KeyboardButton('Вопрос')
+btn_question = types.KeyboardButton('Г‚Г®ГЇГ°Г®Г±')
 markup.add(btn_question, btn_weather, btn_cats, btn_game, btn_start)
 
 bots_numbres: dict = {}
@@ -29,7 +29,7 @@ def send_welcome(message):
     reg_date = convertDate(message.date)
 
     myFirstBot.reply_to(message, 
-                        "Привет, я умею показывать погоду, котиков и играть в игру 'угадай число', так же вы можете задать вопрос тех. поддержке.", reply_markup=markup)
+                        "ГЏГ°ГЁГўГҐГІ, Гї ГіГ¬ГҐГѕ ГЇГ®ГЄГ Г§Г»ГўГ ГІГј ГЇГ®ГЈГ®Г¤Гі, ГЄГ®ГІГЁГЄГ®Гў ГЁ ГЁГЈГ°Г ГІГј Гў ГЁГЈГ°Гі 'ГіГЈГ Г¤Г Г© Г·ГЁГ±Г«Г®', ГІГ ГЄ Г¦ГҐ ГўГ» Г¬Г®Г¦ГҐГІГҐ Г§Г Г¤Г ГІГј ГўГ®ГЇГ°Г®Г± ГІГҐГµ. ГЇГ®Г¤Г¤ГҐГ°Г¦ГЄГҐ.", reply_markup=markup)
     try:
         with open('C:/Users/User/Desktop/Lessons Programming/Stupid_python/Telegram bot/users/id_list.txt', mode='r', encoding='utf-8') as id_list:
             ids = id_list.read().split('\n')
@@ -53,37 +53,37 @@ def greetings(message):
     user_name = message.from_user.first_name
     text: str = message.text.lower()
 
-    if 'привет' in text:
-        myFirstBot.reply_to(message, f'Привет, {user_name}!')
+    if 'ГЇГ°ГЁГўГҐГІ' in text:
+        myFirstBot.reply_to(message, f'ГЏГ°ГЁГўГҐГІ, {user_name}!')
 
-    elif 'погода' in text:
+    elif 'ГЇГ®ГЈГ®Г¤Г ' in text:
         req = requests.get('https://wttr.in/?0T')
         myFirstBot.reply_to(message, req.text)
 
-    elif 'вопрос' in text:
+    elif 'ГўГ®ГЇГ°Г®Г±' in text:
         def question_from_user(message):
             text: str = message.text.lower()
             user_file = str(user_id) + '.txt'
             with open(f'C:/Users/User/Desktop/Lessons Programming/Stupid_python/Telegram bot/questions from users/{user_file}', mode='a', encoding='utf-8') as questions:                
                 question_time = convertDate(message.date)
                 questions.write(f'{user_id}; {question_time}; {user_name}; {text}\n')
-                myFirstBot.send_message(user_id, 'Спасибо за Ваш вопрос, оператор ответит вам в ближайшее время')
+                myFirstBot.send_message(user_id, 'Г‘ГЇГ Г±ГЁГЎГ® Г§Г  Г‚Г Гё ГўГ®ГЇГ°Г®Г±, Г®ГЇГҐГ°Г ГІГ®Г° Г®ГІГўГҐГІГЁГІ ГўГ Г¬ Гў ГЎГ«ГЁГ¦Г Г©ГёГҐГҐ ГўГ°ГҐГ¬Гї')
         
-        myFirstBot.send_message(user_id, 'Введите Ваш вопрос')   
+        myFirstBot.send_message(user_id, 'Г‚ГўГҐГ¤ГЁГІГҐ Г‚Г Гё ГўГ®ГЇГ°Г®Г±')   
         myFirstBot.register_next_step_handler(message, question_from_user) 
-    elif 'котик' in text:
+    elif 'ГЄГ®ГІГЁГЄ' in text:
         try:
             req = requests.get('https://cataas.com/cat')    # https://http.cat/[status_code]
             myFirstBot.send_photo(user_id, req.content)
         except:
-            myFirstBot.reply_to(message, 'К сожалению, котики сейчас не хотят, чтобы на них смотрели. Попробуйте на них посмотреть позже.')
+            myFirstBot.reply_to(message, 'ГЉ Г±Г®Г¦Г Г«ГҐГ­ГЁГѕ, ГЄГ®ГІГЁГЄГЁ Г±ГҐГ©Г·Г Г± Г­ГҐ ГµГ®ГІГїГІ, Г·ГІГ®ГЎГ» Г­Г  Г­ГЁГµ Г±Г¬Г®ГІГ°ГҐГ«ГЁ. ГЏГ®ГЇГ°Г®ГЎГіГ©ГІГҐ Г­Г  Г­ГЁГµ ГЇГ®Г±Г¬Г®ГІГ°ГҐГІГј ГЇГ®Г§Г¦ГҐ.')
 
-    elif 'игра' in text:
+    elif 'ГЁГЈГ°Г ' in text:
         import random
         bots_numbres[user_id] = random.randint(1, 1000)
         players_attempts[user_id] = 0
-        myFirstBot.reply_to(message, f'Я загадал случайное число от 1 до 1000.\n' + 
-                            "Угадайте, какое?")
+        myFirstBot.reply_to(message, f'Гџ Г§Г ГЈГ Г¤Г Г« Г±Г«ГіГ·Г Г©Г­Г®ГҐ Г·ГЁГ±Г«Г® Г®ГІ 1 Г¤Г® 1000.\n' + 
+                            "Г“ГЈГ Г¤Г Г©ГІГҐ, ГЄГ ГЄГ®ГҐ?")
         
     else:
         if text.isdigit():
@@ -92,23 +92,23 @@ def greetings(message):
 
             if attempt == bots_numbres[user_id]:
                 players_attempts[user_id] += 1
-                myFirstBot.reply_to(message, f'Поздравляю, вы угадали!\nC {players_attempts[user_id]} попытки!')
+                myFirstBot.reply_to(message, f'ГЏГ®Г§Г¤Г°Г ГўГ«ГїГѕ, ГўГ» ГіГЈГ Г¤Г Г«ГЁ!\nC {players_attempts[user_id]} ГЇГ®ГЇГ»ГІГЄГЁ!')
                 del players_attempts[user_id]
                 del bots_numbres[user_id]
                 print(players_attempts)
 
             elif attempt > bots_numbres[user_id]:
                 players_attempts[user_id] += 1
-                myFirstBot.reply_to(message, f'Загаданное число меньше')
+                myFirstBot.reply_to(message, f'Г‡Г ГЈГ Г¤Г Г­Г­Г®ГҐ Г·ГЁГ±Г«Г® Г¬ГҐГ­ГјГёГҐ')
                 return players_attempts[user_id]
             
             elif attempt < bots_numbres[user_id]:
                 players_attempts[user_id] += 1
-                myFirstBot.reply_to(message, f'Загаданное число больше')
+                myFirstBot.reply_to(message, f'Г‡Г ГЈГ Г¤Г Г­Г­Г®ГҐ Г·ГЁГ±Г«Г® ГЎГ®Г«ГјГёГҐ')
                 return players_attempts[user_id]
             
         else:
-            myFirstBot.reply_to(message, f'Вы ввели неверное число или неизвестную мне команду, попробуйте ещё раз.')
+            myFirstBot.reply_to(message, f'Г‚Г» ГўГўГҐГ«ГЁ Г­ГҐГўГҐГ°Г­Г®ГҐ Г·ГЁГ±Г«Г® ГЁГ«ГЁ Г­ГҐГЁГ§ГўГҐГ±ГІГ­ГіГѕ Г¬Г­ГҐ ГЄГ®Г¬Г Г­Г¤Гі, ГЇГ®ГЇГ°Г®ГЎГіГ©ГІГҐ ГҐГ№Вё Г°Г Г§.')
 
 myFirstBot.polling()
 
@@ -118,25 +118,25 @@ def Mailing():
         users = users[:-1]
         for user in users:
             user = user.split(', ')
-            myFirstBot.send_message(user[0], f'{user[1]}, здравствуйте! Это пока тестовая рассылка, ещё не ответы на вопросы ;)')
+            myFirstBot.send_message(user[0], f'{user[1]}, Г§Г¤Г°Г ГўГ±ГІГўГіГ©ГІГҐ! ГќГІГ® ГЇГ®ГЄГ  ГІГҐГ±ГІГ®ГўГ Гї Г°Г Г±Г±Г»Г«ГЄГ , ГҐГ№Вё Г­ГҐ Г®ГІГўГҐГІГ» Г­Г  ГўГ®ГЇГ°Г®Г±Г» ;)')
             
-worker_bot = telebot.TeleBot("6127529328:AAFnhSRhBcj3Aed39nJtciURMeg7i-wBu7Q")
+worker_bot = telebot.TeleBot("TOKEN")
 
 markup = types.ReplyKeyboardMarkup(row_width=2)
-btn_mailing = types.KeyboardButton('Рассылка')
+btn_mailing = types.KeyboardButton('ГђГ Г±Г±Г»Г«ГЄГ ')
 markup.add(btn_mailing)
 
 @worker_bot.message_handler(commands=['start', 'help'])
 def start_working(message):
-    worker_bot.reply_to(message, 'Начало работы', reply_markup=markup)
+    worker_bot.reply_to(message, 'ГЌГ Г·Г Г«Г® Г°Г ГЎГ®ГІГ»', reply_markup=markup)
 
 @worker_bot.message_handler(content_types=['text'])
 def Mail(message):
 
     text: str = message.text.lower()
 
-    if 'рассылка' in text:
-        print('Функция')
+    if 'Г°Г Г±Г±Г»Г«ГЄГ ' in text:
+        print('Г”ГіГ­ГЄГ¶ГЁГї')
         Mailing()
 
 worker_bot.polling()
